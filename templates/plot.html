@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+**plot.html**
+
+{% block content %}
+    <div class="row">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Display</button>
+        </form>
+    </div>
+    <div class="row">
+    {% autoescape off %}
+        {{ plot_div }}
+    {% endautoescape %}
+    </div>
+    <script type="text/javascript">
+    document.querySelector('.js-plotly-plot').on("plotly_click", function(data) {
+        const event_id = data.points[0].customdata[0];
+        const event_type = data.points[0].customdata[1];
+        if (event_type && event_id) {
+            window.location.href = 'http://localhost/' + event_type + '/default/view/' + event_id;
+        }
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,5 @@
+/db.sqlite3
+/.idea/*
+Analytics/__pycache__
+Analytics/migrations/__pycache__
+oeanalytics/__pycache__
