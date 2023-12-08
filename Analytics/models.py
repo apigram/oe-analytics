@@ -1,9 +1,12 @@
+from datetime import timezone
+
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.utils.translation import gettext_lazy as _
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import threading
+from datetime import datetime
 
 
 class StatisticType(models.Model):
@@ -59,6 +62,7 @@ class StatisticDatapoint(models.Model):
     y_value = models.FloatField()
     event_id = models.IntegerField(null=True)
     event_type = models.CharField(max_length=100, null=True)
+    event_date = models.DateTimeField(default=datetime.now())
 
     def __str__(self):
         return self.statistic.pas_key + ' (' + str(self.x_value) + ', ' + str(self.y_value) + ')'

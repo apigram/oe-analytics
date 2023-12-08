@@ -35,4 +35,4 @@ class StatisticSerializer(serializers.HyperlinkedModelSerializer):
 class StatisticDatapointSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = StatisticDatapoint
-        fields = ['url', 'statistic', 'x_value', 'y_value', 'event_id', 'event_type']
+        fields = ['url', 'statistic', 'x_value', 'y_value', 'event_id', 'event_type', 'event_date']
