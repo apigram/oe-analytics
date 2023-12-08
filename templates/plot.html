@@ -6,24 +6,50 @@
 
 {% block content %}
     <div class="row">
-        <form method="POST">
+        <form method="POST" id="plot-form">
             {% csrf_token %}
             {{ form|crispy }}
             <button type="submit" class="btn btn-success">Display</button>
         </form>
     </div>
-    <div class="row">
+    <div id="rate-plot" class="row">
     {% autoescape off %}
-        {{ plot_div }}
+        {{ rate_plot_div }}
+    {% endautoescape %}
+    </div>
+    <div class="row" id="scatterline-plot">
+    {% autoescape off %}
+        {{ scatterlines_div }}
+    {% endautoescape %}
+    </div>
+    <div class="row" id="datapoints-plot">
+    {% autoescape off %}
+        {{ datapoints_div }}
     {% endautoescape %}
     </div>
     <script type="text/javascript">
-    document.querySelector('.js-plotly-plot').on("plotly_click", function(data) {
-        const event_id = data.points[0].customdata[0];
-        const event_type = data.points[0].customdata[1];
-        if (event_type && event_id) {
-            window.location.href = 'http://localhost/' + event_type + '/default/view/' + event_id;
-        }
+    document.getElementById('rate-plot').querySelector('.js-plotly-plot').on("plotly_click", function(data) {
+        console.log(document.getElementById('id_rate').value);
+        console.log(data.points[0].x);
+        document.getElementById('id_rate').value = data.points[0].x;
+        document.getElementById('plot-form').submit();
     });
+
+    if (document.getElementById('scatterline-plot').querySelector('.js-plotly-plot')) {
+            document.getElementById('scatterline-plot').querySelector('.js-plotly-plot').on("plotly_click", function(data) {
+            document.getElementById('id_statistic').value = data.points[0].customdata;
+            document.getElementById('plot-form').submit();
+        });
+    }
+
+    if (document.getElementById('datapoints-plot').querySelector('.js-plotly-plot')) {
+        document.getElementById('datapoints-plot').querySelector('.js-plotly-plot').on("plotly_click", function(data) {
+            const event_id = data.points[0].customdata[0];
+            const event_type = data.points[0].customdata[1];
+            if (event_id && event_type) {
+                window.location.href = 'http://localhost/' + event_type + '/default/view/' + event_id;
+            }
+        });
+    }
     </script>
 {% endblock %}
